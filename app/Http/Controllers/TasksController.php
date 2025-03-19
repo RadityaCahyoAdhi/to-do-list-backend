@@ -12,7 +12,7 @@ class TasksController extends Controller
     // Show all tasks
     public function index()
     {
-        $response = tasks::orderBy('created_at', 'DESC')->get();
+        $response = tasks::orderBy('created_at', 'ASC')->get();
 
         return response()->json($response, 200);
     }
@@ -31,7 +31,8 @@ class TasksController extends Controller
         try {
             $task = tasks::create([
                 'task' => $request->task,
-                'completed' => false,
+                'completed' => 0,
+                "completed_at" => null,
                 'created_at' => now(),
                 'updated_at' => now()
             ]);
@@ -64,7 +65,7 @@ class TasksController extends Controller
 
             if ($task) {
                 $task->update([
-                    'completed' => $request->completed,
+                    'completed' => $request->completed ? 1 : 0,
                     'completed_at' => $request->completed ? now() : null,
                     'updated_at' => now()
                 ]);
